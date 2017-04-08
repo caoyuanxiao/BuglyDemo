@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+// 注：需要配置符号表时，使用bugly插件
+apply plugin: 'bugly'
+// 依赖插件脚本
+apply from: 'tinker-support.gradle'
+bugly {
+    appId = '22cfcd7062'
+    appKey = '521c87f9-42b4-4a38-994b-eac05ae2e5d1'
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.bugly.smile.buglydemo"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // 开启multidex
+        multiDexEnabled true
+
+    }
+
+    signingConfigs {
+        release {
+            try {
+                keyAlias 'buglydemo'
+                keyPassword '4471759'
+                storeFile file('D:/keystore/buglydemo.jks')
+                storePassword '4471759'
+            } catch (ex) {
+                throw new InvalidUserDataException(ex.toString())
+            }
+        }
+    }
+
+
+
+
+    // recommend
+    dexOptions {
+        jumboMode = true
+    }
+
+  /*  buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }*/
+
+
+    // 构建类型
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+
+
+    compile "com.android.support:multidex:1.0.1" // 多dex配置
+    //注释掉原有bugly的仓库
+    //compile 'com.tencent.bugly:crashreport:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.3.2
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+   // compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+}
