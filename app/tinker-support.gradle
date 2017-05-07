@@ -5,22 +5,16 @@ def bakPath = file("${buildDir}/bakApk/")
 /**
  * 此处填写每次构建生成的基准包目录
  */
-def baseApkDir = "app-0408-13-15-37"
+def baseApkDir = "app-0507-12-19-48"
 
 /**
  * 对于插件各参数的详细解析请参考
  */
 tinkerSupport {
-
     // 开启tinker-support插件，默认值true
     enable = true
-
     // 指定归档目录，默认值当前module的子目录tinker
     autoBackupApkDir = "${bakPath}"
-
-    // 是否启用覆盖tinkerPatch配置功能，默认值false
-    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
-    overrideTinkerPatchConfiguration = true
 
     // 编译补丁包时，必需指定基线版本的apk，默认值为空
     // 如果为空，则表示不是进行补丁包的编译
@@ -34,14 +28,22 @@ tinkerSupport {
     baseApkResourceMapping = "${bakPath}/${baseApkDir}/app-release-R.txt"
 
     // 构建基准包和补丁包都要指定不同的tinkerId，并且必须保证唯一性
-    //tinkerId = "base-1.0.1"
-     tinkerId = "patch-1.0.1"
+    //tinkerId = "base-1.0.4"
+      tinkerId = "patch-1.0.4"
+
+
+    // 是否启用覆盖tinkerPatch配置功能，默认值false
+    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
+    overrideTinkerPatchConfiguration = true
 
     // 构建多渠道补丁时使用
     // buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
 
+    //支持加固需要添加的属性
+    isProtectedApp = true
+
     // 是否开启反射Application模式
-    enableProxyApplication = false
+    enableProxyApplication = true
 
 }
 
@@ -51,7 +53,7 @@ tinkerSupport {
  * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97
  */
 tinkerPatch {
-    //oldApk ="${bakPath}/${appName}/app-release.apk"
+    oldApk = "${bakPath}/${baseApkDir}/app-release.apk"
     ignoreWarning = false
     useSign = true
     dex {
@@ -78,7 +80,7 @@ tinkerPatch {
     buildConfig {
         keepDexApply = false
         //tinkerId = "1.0.1-base"
-        // applyMapping = "${bakPath}/${appName}/app-release-mapping.txt" //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
+        //applyMapping = "${bakPath}/${appName}/app-release-mapping.txt" //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
         //applyResourceMapping = "${bakPath}/${appName}/app-release-R.txt" // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
     }
 }

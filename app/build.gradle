@@ -1,12 +1,7 @@
 apply plugin: 'com.android.application'
-// 注：需要配置符号表时，使用bugly插件
-apply plugin: 'bugly'
 // 依赖插件脚本
 apply from: 'tinker-support.gradle'
-bugly {
-    appId = '22cfcd7062'
-    appKey = '521c87f9-42b4-4a38-994b-eac05ae2e5d1'
-}
+
 
 android {
     compileSdkVersion 25
@@ -28,7 +23,7 @@ android {
             try {
                 keyAlias 'buglydemo'
                 keyPassword '4471759'
-                storeFile file('D:/keystore/buglydemo.jks')
+                storeFile file('./keystore/buglydemo.jks')
                 storePassword '4471759'
             } catch (ex) {
                 throw new InvalidUserDataException(ex.toString())
@@ -36,21 +31,17 @@ android {
         }
     }
 
-
-
-
     // recommend
     dexOptions {
         jumboMode = true
     }
 
-  /*  buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }*/
-
+    /*  buildTypes {
+          release {
+              minifyEnabled true
+              proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+          }
+      }*/
 
     // 构建类型
     buildTypes {
@@ -76,5 +67,6 @@ dependencies {
     //注释掉原有bugly的仓库
     //compile 'com.tencent.bugly:crashreport:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.3.2
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-   // compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+    // compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
+
 }
